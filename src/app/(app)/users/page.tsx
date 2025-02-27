@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const UsersPage = () => {
-  // const PROFILE_URL = process.env;
+  const BASE_URL = process.env.BASE_URL;
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +42,6 @@ const UsersPage = () => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
-  console.log("users", users);
 
   if (isLoading) {
     return (
@@ -61,7 +60,7 @@ const UsersPage = () => {
               <CardTitle>@{user.username}</CardTitle>
               <CardDescription>
                 <TransitionLink href={`/u/${user.username}`}>
-                  {`https://localhost:3000/u/${user.username}`}
+                  {`${BASE_URL}/${user.username}`}
                 </TransitionLink>
               </CardDescription>
             </CardHeader>
