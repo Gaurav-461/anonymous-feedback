@@ -34,7 +34,8 @@ A web application that allows users to receive and send anonymous feedback. Buil
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Gaurav-461/anonymous-feedback.git
+   
    cd anonymous_feedback_app
    ```
 2. **Install dependencies:**
