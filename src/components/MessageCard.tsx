@@ -12,13 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Message } from "@/model/User";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios from "axios";
@@ -31,8 +25,6 @@ type MessageCardProps = {
 };
 
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
-  const date = new Date();
-
   const handleDeleteConfirm = async () => {
     const toastId = "deleteMessageToast";
     try {
@@ -57,21 +49,15 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
       <Card className="bg-white/15">
         <CardHeader>
           <CardTitle>{message.content}</CardTitle>
-          <CardFooter></CardFooter>
         </CardHeader>
+        <CardFooter>{new Date(message.createdAt).toLocaleString()}</CardFooter>
 
         <div className="p-6 flex justify-end">
           <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <div className="w-full flex items-center justify-between">
-                <div>
-                <p className="max-sm:text-sm">{new Date(message.createdAt).toLocaleString()}</p>
-                </div>
-                <Button variant="destructive">
-                  <X className="mr-2 h-4 w-4" />
-                  Delete
-                </Button>
-              </div>
+            <AlertDialogTrigger asChild className="">
+              <Button variant="destructive">
+                <X className="size-4" />
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>

@@ -8,10 +8,11 @@ import { User } from "next-auth";
 import Link from "next/link";
 import TransitionLink from "./TransitionLink";
 import { useState } from "react";
-import { Cross, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const router = useRouter();
   const URL_PATHNAME = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -79,31 +80,39 @@ const Navbar = () => {
       {/* Responsive Navbar */}
       {status === "authenticated" ? (
         <div className="md:hidden">
-          <Button
-            className="w-full text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? (
-              <X className="size-6 shrink-0" />
-            ) : (
-              <Menu className="size-6 shrink-0" />
-            )}
-          </Button>
-          {isOpen && (
-            <div className="absolute left-0 mt-4 w-full dark:backdrop-blur-xl rounded-md shadow-lg z-10 p-6 border transition-all">
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            {pathname !== "/users" && (
               <Button
                 onClick={() => {
                   router.push("/users");
                   setIsOpen(false);
                 }}
-                className={buttonVariants({ variant: "ghost", size: "lg" })}
+                variant={"ghost"}
+                className={"w-full"}
               >
                 All Users
               </Button>
+            )}
+            <Button
+              className="w-full rounded-md"
+              onClick={() => setIsOpen(!isOpen)}
+              variant={"ghost"}
+            >
+              {isOpen ? (
+                <X className="size-12 shrink-0" />
+              ) : (
+                <Menu className="size-6 shrink-0" />
+              )}
+            </Button>
+          </div>
+          {isOpen && (
+            <div className="absolute left-0 mt-4 w-full bg-white dark:bg-zinc-950 max-sm:h-dvh backdrop-blur-xl rounded-md shadow-lg z-10 p-6 transition-all">
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Welcome, {user?.username || user?.email}
+              </div>
+
               <div className="flex flex-col gap-4 mt-4">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Welcome, {user?.username || user?.email}
-                </span>
                 <Button
                   onClick={() => {
                     router.push("/dashboard");
@@ -116,6 +125,7 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Button>
+
                 <Button
                   variant={"destructive"}
                   onClick={() => signOut({ callbackUrl: "/sign-in" })}

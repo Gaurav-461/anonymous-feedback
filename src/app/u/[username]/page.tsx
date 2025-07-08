@@ -20,8 +20,7 @@ import { Loader2, SendHorizontal } from "lucide-react";
 import { use, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { set, z } from "zod";
-import { useCompletion } from "@ai-sdk/react";
+import { z } from "zod";
 
 interface UsernameType {
   params: Promise<{ username: string }>;
@@ -51,7 +50,6 @@ const SendMessagePage = ({ params }: UsernameType) => {
   });
 
   const messageContent = form.watch("content");
-  console.log(" messageContent:-",messageContent);
 
   const onSubmitHandler = async (data: z.infer<typeof MessageSchema>) => {
     const toastId = "sendMessageToast";
