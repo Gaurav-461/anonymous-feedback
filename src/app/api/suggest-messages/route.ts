@@ -1,7 +1,7 @@
-import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
-import { generateText, streamText } from "ai";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
 
     const messages =

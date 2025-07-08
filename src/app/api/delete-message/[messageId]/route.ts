@@ -4,25 +4,27 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import UserModel from "@/model/User";
 
 interface MessageIdParams {
-  params: {
-    messageId: string;
-  };
+  params: Promise<{ messageId: string }>;
 }
 
 export async function DELETE(request: Request, { params }: MessageIdParams) {
-  const messageId = params.messageId;
   await dbConnect();
-
-  const session = await getServerSession(authOptions);
-  const user: User = session?.user;
-
-  if (!session || !session.user) {
-    return Response.json(
-      { success: false, message: "Not Authenticated" },
-      { status: 401 }
-    );
-  }
   try {
+    const { messageId } = await params;
+
+    if (!messageId) {
+      throw new Error("Message ID is required");
+    }
+
+    const session = await getServerSession(authOptions);
+    const user: User = session?.user;
+
+    if (!session || !session.user) {
+      return Response.json(
+        { success: false, message: "Not Authenticated" },
+        { status: 401 }
+      );
+    }
     const updatedResult = await UserModel.updateOne(
       { _id: user._id },
       { $pull: { messages: { _id: messageId } } }
@@ -40,7 +42,10 @@ export async function DELETE(request: Request, { params }: MessageIdParams) {
       { status: 200 }
     );
   } catch (error) {
-    console.log("Error occurred in delete message route while deleting message:-", error);
+    console.log(
+      "Error occurred in delete message route while deleting message:-",
+      error
+    );
     return Response.json(
       { success: false, message: "Error while deleting message" },
       { status: 500 }

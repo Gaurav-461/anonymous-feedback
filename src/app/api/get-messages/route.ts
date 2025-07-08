@@ -5,7 +5,7 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 
-export async function GET(request: Request) {
+export async function GET() {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
@@ -19,9 +19,10 @@ export async function GET(request: Request) {
   }
 
   const userId = new mongoose.Types.ObjectId(user._id);
+  console.log("userId from get-messages route:-", userId);
   try {
     const user = await UserModel.aggregate([
-      { $match: { _id: userId } },
+      { $match: { _id: userId._id } },
       {
         $unwind: "$messages",
       },
@@ -38,7 +39,7 @@ export async function GET(request: Request) {
       },
     ]);
 
-    console.log("user's messages aggregate result:-", user);
+    console.log("user's messages aggregate result from get-messages route:-", user);
 
     if (!user) {
       return Response.json(

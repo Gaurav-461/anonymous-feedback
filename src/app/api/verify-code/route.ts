@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const { username, code } = await request.json();
 
     // Decodes the URL-encoded username string to handle special characters that were encoded during transmission
-    // This is necessary because when usernames containing special characters are sent via URLs, 
+    // This is necessary because when usernames containing special characters are sent via URLs,
     // they get encoded (e.g., spaces become %20, @ becomes %40). This function converts them back to their original form
     // Example: 'john%20doe' becomes 'john doe', 'user%40example' becomes 'user@example'
     const decodedUsername = decodeURIComponent(username);
@@ -28,7 +28,8 @@ export async function POST(request: Request) {
     const isCodeNotExpiry = new Date(user.verifyCodeExpiry) > new Date();
 
     if (isCodeNotExpiry && isCodeValid) {
-      (user.isVerified = true), await user.save();
+      user.isVerified = true;
+      await user.save();
       return Response.json(
         {
           success: true,
@@ -48,13 +49,14 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
-          message: "Verification code has expired, please sign-up again to get a new code.",
+          message:
+            "Verification code has expired, please sign-up again to get a new code.",
         },
         { status: 400 }
       );
     }
-  } catch (error: any) {
-    console.log("Error while verifying user:-", error.message);
+  } catch (error) {
+    console.log("Error while verifying user:-", error);
     return Response.json(
       {
         success: false,

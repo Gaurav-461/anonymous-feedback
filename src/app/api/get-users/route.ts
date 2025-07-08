@@ -1,7 +1,7 @@
 import dbConnect from "@/db/dbConnect";
 import UserModel from "@/model/User";
 
-export async function GET(request: Request) {
+export async function GET() {
   await dbConnect();
   try {
     const users = await UserModel.find({ isVerified: true }).limit(10).select(["_id", "username"]);
