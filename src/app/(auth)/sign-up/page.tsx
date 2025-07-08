@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link";
 import { useDebounceCallback } from "usehooks-ts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signUpSchema } from "@/schemas/signUpSchema";
 import axios, { AxiosError } from "axios";
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Loader, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 const SignUpPage = () => {
   const router = useRouter();
@@ -42,8 +42,7 @@ const SignUpPage = () => {
     },
   });
 
-  const checkUsernameUnique = async () => {
-    const toastId = "usernameCheckToast";
+  const checkUsernameUnique = useCallback(async () => {
     if (username.trim().length > 0) {
       setIsCheckingUsername(true);
       setUsernameMessage("");
@@ -53,7 +52,7 @@ const SignUpPage = () => {
           `/api/check-username-unique?username=${username}`
         );
 
-        console.log("Axios for check username is unique response:-", response);
+        // console.log("Axios for check username is unique response:-", response);
 
         setUsernameMessage(response.data.message);
       } catch (error) {
@@ -65,11 +64,11 @@ const SignUpPage = () => {
         setIsCheckingUsername(false);
       }
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     checkUsernameUnique();
-  }, [username]);
+  }, [username, checkUsernameUnique]);
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     const toastId = "onSubmitToast";

@@ -11,7 +11,6 @@ import {
   Form,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Loader2, ArrowRight } from "lucide-react";
@@ -40,8 +39,6 @@ const SignInPage = () => {
       identifier: data.identifier,
       password: data.password,
     });
-
-    // TODO: Handle result.error
 
     if (result?.error) {
       toast.error(result.error, { id: toastId });
@@ -76,7 +73,6 @@ const SignInPage = () => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    {/* <FormLabel>Email</FormLabel> */}
                     <Input placeholder="username/email" {...field} />
                     <FormMessage />
                   </FormItem>
@@ -87,7 +83,6 @@ const SignInPage = () => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    {/* <FormLabel>Password</FormLabel> */}
                     <Input type="password" placeholder="password" {...field} />
                     <FormMessage />
                   </FormItem>
@@ -103,7 +98,7 @@ const SignInPage = () => {
                     </>
                   ) : (
                     <>
-                      <span className="">Sign Up</span>
+                      <span className="">Sign in</span>
                       <ArrowRight className="ml-2 size-4" />
                     </>
                   )}
@@ -113,7 +108,7 @@ const SignInPage = () => {
           </Form>
 
           <div className="flex items-center justify-center gap-4">
-            <p>Don't have an account?</p>
+            <p>Don&apos;t have an account?</p>
             <Link href="/sign-up" className="underline">Sign Up</Link>
           </div>
         </div>
