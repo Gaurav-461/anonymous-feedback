@@ -1,21 +1,25 @@
-import { NextAuthOptions, User } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
-import dbConnect from '@/db/dbConnect';
-import UserModel from '@/model/User';
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import dbConnect from "@/db/dbConnect";
+import UserModel from "@/model/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: 'credentials',
-      name: 'Credentials',
+      id: "credentials",
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        password: { label: "Password", type: "password" },
+        identifier: { label: "Identifier", type: "text" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials) {
         await dbConnect();
         try {
+          if (!credentials?.identifier || !credentials?.password) {
+            throw new Error("Email and password are required");
+          }
+
           const user = await UserModel.findOne({
             $or: [
               { email: credentials.identifier },
@@ -24,25 +28,33 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
-            throw new Error('No user found with this email');
+            throw new Error("No user found with this email");
           }
 
           if (!user.isVerified) {
-            throw new Error('Please verify your account before logging in');
+            throw new Error("Please verify your account before logging in");
           }
 
           const isPasswordCorrect = await bcrypt.compare(
             credentials.password,
             user.password
           );
-          
+
           if (isPasswordCorrect) {
-            return user;
+            return {
+              id: user._id.toString(),
+              email: user.email,
+              username: user.username,
+              isVerified: user.isVerified,
+              isAcceptingMessages: user.isAcceptingMessages,
+            };
           } else {
-            throw new Error('Incorrect password');
+            throw new Error("Incorrect password");
           }
-        } catch (err: any) {
-          throw new Error(err);
+        } catch (err) {
+          throw new Error(
+            err instanceof Error ? err.message : "An error occurred"
+          );
         }
       },
     }),
@@ -68,10 +80,10 @@ export const authOptions: NextAuthOptions = {
     },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/sign-in',
+    signIn: "/sign-in",
   },
 };
