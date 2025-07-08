@@ -7,15 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { User } from "@/model/User";
 import { ApiResponse } from "@/types/ApiResponse";
 import axios, { AxiosError } from "axios";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const UsersPage = () => {
-  const BASE_URL = process.env.BASE_URL;
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,6 +38,12 @@ const UsersPage = () => {
       setIsLoading(false);
     }
   };
+
+  // const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  // or
+  const BASE_URL = `${window.location.protocol}//${window.location.host}`;
+  const PROFILE_URL: string = `${BASE_URL}/u`;
+
   useEffect(() => {
     fetchAllUsers();
   }, []);
@@ -46,21 +51,29 @@ const UsersPage = () => {
   if (isLoading) {
     return (
       <>
-        <div>Loading</div>
+        <div className="max-w-screen-xl mx-auto px-4 py-6">
+          <h1 className="text-2xl font-bold mb-4">All Users</h1>
+          <div className="grid grid-cols-1 gap-4 sm:gap-10 sm:grid-cols-2 lg:grid-cols-3 ">
+            {Array.from({ length: 12 }).map((_, index) => (
+              <Skeleton key={index + 1} className="w-full h-28" />
+            ))}
+          </div>
+        </div>
       </>
     );
   }
+
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-4">All Users</h1>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-10 sm:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
-          <Card key={user._id as string} className="sm:w-[300px]">
+          <Card key={user._id as string} className="sm:w-full]">
             <CardHeader>
               <CardTitle>@{user.username}</CardTitle>
               <CardDescription>
-                <TransitionLink href={`/u/${user.username}`}>
-                  {`${BASE_URL}/${user.username}`}
+                <TransitionLink href={`${PROFILE_URL}/${user.username}`}>
+                  {`${PROFILE_URL}/${user.username}`}
                 </TransitionLink>
               </CardDescription>
             </CardHeader>
