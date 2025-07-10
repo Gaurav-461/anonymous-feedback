@@ -17,7 +17,6 @@ import { Loader2, RefreshCcw } from "lucide-react";
 import MessageCard from "@/components/MessageCard";
 import TransitionLink from "@/components/TransitionLink";
 import { Skeleton } from "@/components/ui/skeleton";
-import { usePathname } from "next/navigation";
 
 const Dashboard = () => {
 

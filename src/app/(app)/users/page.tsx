@@ -39,10 +39,9 @@ const UsersPage = () => {
     }
   };
 
-  // const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-  // or
-  const BASE_URL = `${window.location.protocol}//${window.location.host}`;
-  const PROFILE_URL: string = `${BASE_URL}/u`;
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+  
+  const PROFILE_URL= `${BASE_URL}/u`;
 
   useEffect(() => {
     fetchAllUsers();
