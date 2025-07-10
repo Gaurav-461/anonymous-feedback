@@ -20,8 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePathname } from "next/navigation";
 
 const Dashboard = () => {
-  const URL_PATHNAME = usePathname()
-  console.log(URL_PATHNAME)
+
   // State for storing messages and loading states
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
