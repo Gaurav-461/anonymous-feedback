@@ -99,11 +99,11 @@ const SignUpPage = () => {
   return (
     <>
       <title>Sign Up</title>
-      <div className="flex justify-center items-center min-h-screen px-4 ">
+      <div className="flex justify-center items-center h-[89dvh] px-4 ">
         <div className="w-full max-w-md p-8 space-y-8 rounded-lg shadow-lg border">
           <div className="text-center">
             <h1 className="text-2xl font-bold tracking-tight lg:text-3xl mb-6">
-              Welcome Back to True Feedback
+              Welcome to True Feedback
             </h1>
             <p className="mb-4">Sign up to get started</p>
           </div>

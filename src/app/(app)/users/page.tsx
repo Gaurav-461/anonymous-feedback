@@ -68,7 +68,7 @@ const UsersPage = () => {
       <h1 className="text-2xl font-bold mb-4">All Users</h1>
       <div className="grid grid-cols-1 gap-4 sm:gap-10 sm:grid-cols-2 lg:grid-cols-3">
         {users.map((user) => (
-          <Card key={user._id as string} className="sm:w-full]">
+          <Card key={`${user._id}`} className="sm:w-full]">
             <CardHeader>
               <CardTitle>@{user.username}</CardTitle>
               <CardDescription>
