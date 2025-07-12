@@ -73,7 +73,7 @@ const SignInPage = () => {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <Input placeholder="username/email" {...field} />
+                    <Input placeholder="username or email" {...field} />
                     <FormMessage />
                   </FormItem>
                 )}
