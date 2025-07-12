@@ -9,17 +9,17 @@ export async function GET() {
   await dbConnect();
 
   const session = await getServerSession(authOptions);
-  const user: User = session?.user;
+  const _user: User = session?.user;
 
-  if (!session || !user) {
+  if (!session || !_user) {
     return Response.json(
       { success: false, message: "Not authenticated" },
       { status: 401 }
     );
   }
 
-  const userId = new mongoose.Types.ObjectId(user._id);
-  console.log("userId from get-messages route:-", userId);
+  const userId = new mongoose.Types.ObjectId(_user._id);
+  
   try {
     const user = await UserModel.aggregate([
       { $match: { _id: userId._id } },
@@ -39,9 +39,7 @@ export async function GET() {
       },
     ]);
 
-    console.log("user's messages aggregate result from get-messages route:-", user);
-
-    if (!user) {
+    if (!user || user.length === 0) {
       return Response.json(
         { success: false, message: "User not found" },
         { status: 404 }
