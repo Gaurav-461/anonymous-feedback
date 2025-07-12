@@ -41,10 +41,12 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (isPasswordCorrect) {
+            // Convert Mongoose document to plain object and serialize ObjectId
             return {
               id: user._id.toString(),
-              email: user.email,
+              _id: user._id.toString(),
               username: user.username,
+              email: user.email,
               isVerified: user.isVerified,
               isAcceptingMessages: user.isAcceptingMessages,
             };
