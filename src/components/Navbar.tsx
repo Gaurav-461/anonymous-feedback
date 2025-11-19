@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 max-w-screen-xl w-full mx-auto py-4 px-2 backdrop-blur-md flex flex-grow items-center justify-between gap-4 z-50 border-b">
       <TransitionLink className="max-sm:text-xs" href="/">
-        Anonymous <span className="font-bold text-green-600">Message</span>
+        Anonymous <span className="font-bold text-green-600">Feedback</span>
       </TransitionLink>
 
       <div className="hidden md:block">
