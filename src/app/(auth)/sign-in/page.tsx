@@ -45,11 +45,12 @@ const SignInPage = () => {
       setIsSubmitting(false);
       return;
     }
-
+    
     if (result?.ok) {
       toast.success("Sign in successfully", { id: toastId });
       router.replace("/dashboard");
     }
+    setIsSubmitting(false);
   };
 
   return (
