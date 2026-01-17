@@ -71,7 +71,7 @@ const Dashboard = () => {
       setIsSwitchLoading(false);
       try {
         const response = await axios.get<ApiResponse>("/api/get-messages");
-        console.log("User messages:-", response);
+
         setMessages(response.data.messages || []);
 
         if (!response.data.messages) {
@@ -158,8 +158,6 @@ const Dashboard = () => {
       console.log("Error while copying profile URL:-", error);
     }
   };
-
-  console.log(process.env.NODE_ENV)
 
   return (
     <>
